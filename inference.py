@@ -57,7 +57,6 @@ class DiscreteDistribution(dict):
         Normalize the distribution such that the total value of all keys sums
         to 1. The ratio of values for all keys will remain the same. In the case
         where the total value of the distribution is 0, do nothing.
-
         >>> dist = DiscreteDistribution()
         >>> dist['a'] = 1
         >>> dist['b'] = 2
@@ -75,6 +74,7 @@ class DiscreteDistribution(dict):
         {}
         """
         "*** YOUR CODE HERE ***"
+        #normalizes the distribution so that everything sums to 1
         if not self.total():
             return
         total = float(self.total())
@@ -85,7 +85,6 @@ class DiscreteDistribution(dict):
         """
         Draw a random sample from the distribution and return the key, weighted
         by the values associated with each key.
-
         >>> dist = DiscreteDistribution()
         >>> dist['a'] = 1
         >>> dist['b'] = 2
@@ -103,6 +102,7 @@ class DiscreteDistribution(dict):
         0.0
         """
         "*** YOUR CODE HERE ***"
+        #gathers a random distribution sample and returns the key based on the weight of the respective value
         keys = []
         weights = []
         for key, weight in self.items():
@@ -179,6 +179,7 @@ class InferenceModule:
         Return the probability P(noisyDistance | pacmanPosition, ghostPosition).
         """
         "*** YOUR CODE HERE ***"
+        #determines the probability of a ghost being in a direction and return the value
         if ghostPosition == jailPosition:
             if noisyDistance == None:
                 return 1
@@ -192,7 +193,6 @@ class InferenceModule:
         """
         Set the position of the ghost for this inference module to the specified
         position in the supplied gameState.
-
         Note that calling setGhostPosition does not change the position of the
         ghost in the GameState object used for tracking the true progression of
         the game.  The code in inference.py only ever receives a deep copy of
@@ -281,14 +281,11 @@ class ExactInference(InferenceModule):
     def observeUpdate(self, observation, gameState):
         """
         Update beliefs based on the distance observation and Pacman's position.
-
         The observation is the noisy Manhattan distance to the ghost you are
         tracking.
-
         self.allPositions is a list of the possible ghost positions, including
         the jail position. You should only consider positions that are in
         self.allPositions.
-
         The update model is not entirely stationary: it may depend on Pacman's
         current position. However, this is not a problem, as Pacman's current
         position is known.
@@ -298,6 +295,7 @@ class ExactInference(InferenceModule):
 
         beliefs = self.beliefs.copy()
 
+        #for each possible ghost position, determine the probability of a ghost being at that position and update beliefs[ghostPosition]
         for ghostPosition in self.allPositions:
             probability = self.getObservationProb(observation, gameState.getPacmanPosition(), ghostPosition,
                                               self.getJailPosition())
@@ -311,7 +309,6 @@ class ExactInference(InferenceModule):
         """
         Predict beliefs in response to a time step passing from the current
         state.
-
         The transition model is not entirely stationary: it may depend on
         Pacman's current position. However, this is not a problem, as Pacman's
         current position is known.
@@ -321,6 +318,7 @@ class ExactInference(InferenceModule):
 
         distributionDict = DiscreteDistribution()
 
+        #for each move that is made, determine the probability of a ghost moving to each new possible position and update distributionDict accordingly
         for oldPos in self.beliefs.keys():
             newPosDist = self.getPositionDistribution(gameState, oldPos)
             for newPos in newPosDist.keys():
