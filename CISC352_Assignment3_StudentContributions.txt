@@ -1,0 +1,5 @@
+Adam Hirani (20124657) - Did the code for q1 and q2 and tested them
+
+Michael Amorim (20107103) - Did the code for question 3 and 4 and tested them
+
+Jeffrey Kung (20115667) - Did the code for question 5, tested it and made comments for added code
