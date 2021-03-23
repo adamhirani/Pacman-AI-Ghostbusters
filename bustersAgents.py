@@ -147,10 +147,10 @@ class GreedyBustersAgent(BustersAgent):
 
         maxBelief = []
 
-        #maxBelief = [max(dist, key=lambda x: dist[x]) for dist in livingGhostPositionDistributions]
-
+        #Get every dictionary from livingGhostPositionDistributions
         for distance in livingGhostPositionDistributions:
             maxVal = 0
+            #find greatest value in each dictionary and append to maxBelief
             for key in distance:
                 maxVal = max(maxVal, distance[key])
             maxBelief.append(list(distance.keys())[list(distance.values()).index(maxVal)])
@@ -158,16 +158,20 @@ class GreedyBustersAgent(BustersAgent):
         minDistance = float('inf')
         minAction = 0
 
+        #for each valid action that can be done
         for action in legal:
             successorPosition = Actions.getSuccessor(pacmanPosition, action)
 
             distance = float('inf')
+            #for each ghost in maxBelief, find closest ghost to the action
             for ghost in maxBelief:
                 if self.distancer.getDistance(successorPosition, ghost) < distance:
                     distance = self.distancer.getDistance(successorPosition, ghost)
 
+            #determines minDistance and what actions are required to claim the closest ghost
             if minDistance > distance:
                 minAction = action
                 minDistance = distance
 
+        #return the selected action
         return minAction
